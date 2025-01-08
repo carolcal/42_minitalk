@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cayamash <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: cayamash <cayamash@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 16:20:34 by cayamash          #+#    #+#              #
-#    Updated: 2025/01/07 17:49:07 by cayamash         ###   ########.fr        #
+#    Updated: 2025/01/08 12:20:03 by cayamash         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ SRCS = src
 INCLUDES = -I lib/ -I src/ -I .
 
 # Source files and object files
-SRC_CLIENT = $(SRCS)/client/client.c
-SRC_SERVER = $(SRCS)/server/server.c
+SRC_CLIENT = $(SRCS)/client.c
+SRC_SERVER = $(SRCS)/server.c
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 OBJ_SERVER = $(SRC_SERVER:.c=.o)
 

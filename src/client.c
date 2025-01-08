@@ -6,20 +6,50 @@
 /*   By: cayamash <cayamash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 17:26:10 by cayamash          #+#    #+#             */
-/*   Updated: 2025/01/07 18:25:24 by cayamash         ###   ########.fr       */
+/*   Updated: 2025/01/08 11:28:51 by cayamash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int main(int argc, char **argv)
+void	send_message(int pid, char *message)
 {
-	if(argc != 3)
+	int	i;
+	int	j;
+	int	bit;
+
+	i = 0;
+	while (message[i] != '\0')
 	{
-		ft_printf("Executable Usage: ./client [PID] [message]\n");
+		j = 7;
+		while (j >= 0)
+		{
+			bit = (message[i] >> j & 1);
+			if (bit == 0)
+				kill(pid, SIGUSR2);
+			else
+				kill(pid, SIGUSR1);
+			usleep(50);
+			j--;
+		}
+		i++;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	int		pid;
+	char	*message;
+
+	if (argc != 3)
+	{
+		ft_printf("Execute client as follows: ./client [PID] [message]\n");
 		return (1);
 	}
-	while (argc--)
-		ft_printf("%s\n", argv[argc]);
+	pid = ft_atoi(argv[1]);
+	message = ft_strdup(argv[2]);
+
+	send_message(pid, message);
+
 	return (0);
 }
