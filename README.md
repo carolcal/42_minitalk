@@ -26,7 +26,7 @@ Signals are asynchronous, which means they can interrupt the normal flow of a pr
 ### Why Use Signals?
 The use of signals allows for efficient and lightweight communication between the server and the client. Instead of relying on more complex methods like sockets or files, signals provide a simple mechanism to convey information. This is particularly suitable for small projects and exercises to understand low-level process management in UNIX systems.
 
-## `signal` library
+### `signal` library
 To manage UNIX signals, the project utilizes the signal library. Here’s a breakdown of the key components used:
 
 - `sigaction`: The `sigaction` structure is used to define the behavior of a process when it receives a signal. It allows you to specify which function should be called to handle the signal, whether additional signal information should be available, and which signals should be blocked while handling the signal.
@@ -35,7 +35,7 @@ To manage UNIX signals, the project utilizes the signal library. Here’s a brea
 
 - `signal()` and `sigaction()`: These are used to set up the signal handlers. In this project, `sigaction` is used with the `SA_SIGINFO` flag, which provides more detailed information about the signal, such as the PID of the sender.
 
-### Utils Functions for this project
+## Utils Functions for this project
 Several utility functions are essential for the successful operation of the client and server.
 
 - `send_message()`:This function is responsible for converting the message into its binary form and sending the corresponding signals (SIGUSR1 and SIGUSR2) to the server. It loops through each character of the message, and for each bit, it sends the appropriate signal.
