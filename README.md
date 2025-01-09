@@ -11,7 +11,7 @@ The process of sending the message is done by converting each character to its b
 
 - If the bit is 1, the client sends SIGUSR1.
 - If the bit is 0, the client sends SIGUSR2.
-- 
+
 This means that the communication between the server and the client occurs through binary encoding, and SIGUSR1 and SIGUSR2 are the only signals allowed for this exchange.
 
 ## But what are UNIX signals?
@@ -36,12 +36,49 @@ To manage UNIX signals, the project utilizes the signal library. Here’s a brea
 
 - `signal()` and `sigaction()`: These are used to set up the signal handlers. In this project, `sigaction` is used with the `SA_SIGINFO` flag, which provides more detailed information about the signal, such as the PID of the sender.
 
-## Utils Functions for this project
+## Other new functions
+
+- `getpid` : Retrieves the process ID (PID) of the current process. The client uses this to identify the PID of the server it needs to communicate with.
+- `usleep` : Suspends the program execution for a specified number of microseconds. This is useful for introducing a delay to avoid overwhelming the server with rapid signal sending.
+- `sleep` : Suspends the program execution for a specified number of seconds. Similar to usleep, it provides a coarser level of delay control.
+- `kill` : Sends a signal to a process or group of processes. This is the core function used by the client to transmit signals (SIGUSR1 or SIGUSR2) to the server.
+- `exit` : Terminates the program. It is used to exit gracefully when an error occurs or when the task is complete.
+- `pause` : Causes the process to stop and wait until a signal is received. The server uses this function to wait for incoming signals from the client.
+
+
+## Utilities Functions
 Besides some of my Libft functions (which I added in the `lib` folder), I also created several utility functions specifically for this project.
 
-- `send_message()`:This function is responsible for converting the message into its binary form and sending the corresponding signals (SIGUSR1 and SIGUSR2) to the server. It loops through each character of the message, and for each bit, it sends the appropriate signal.
+### Send Message
+In the client side the `send_message` function sends a message from the client to the server by encoding it bit by bit:
 
-- `signal_handler()`: The signal handler function, which is executed when the server receives a signal. It decodes the incoming signal (either SIGUSR1 or SIGUSR2) and adds the corresponding bit to the message being received.
+- Loops through each character of the message.
+- For each character, iterates over its 8 bits (starting from the most significant bit).
+- Sends **SIGUSR1** for a 1 bit and **SIGUSR2** for a 0 bit using the `kill` function.
+- After sending each bit, waits for the server's acknowledgment (`g_response`), introducing a slight delay with `usleep` if needed to avoid overwhelming the server.
 
-- `response_handler()`: In the client, this handler receives feedback from the server, notifying the client that the signal has been received and processed. It’s particularly useful when the server acknowledges each bit sent.
+### Signal Handler
+In the server side the `signal_handler` function processes signals from the client to reconstruct the message:
 
+- **Bit Decoding:** Each signal represents a bit (`SIGUSR1 = 1`, `SIGUSR2 = 0`), which is added to the current character (`g_message.c`).
+- **Character Assembly:** After 8 bits, a full character is formed:
+    - If the character is `'\0'`, the server prints the full message and resets.
+    - Otherwise, the character is added to the message.
+- **Acknowledgment:** Sends **SIGUSR1** back to the client after each signal is processed.
+
+### Message Creation
+The `create_message` function dynamically builds the message:
+
+- Appends the current character (`g_message.c`) to the growing message (`g_message.msg`).
+- Initializes the message if it's the first character.
+- Ensures proper memory management and exits on allocation failure.
+
+### Response Handler
+In the client side the `response_handler` function updates a global variable to confirm that the server received and processed a signal:
+
+
+## Workflow Diagram
+
+The following diagram illustrates the this minitalk works:
+
+![Minitalk Workflow](img/42_minitalk.png)
