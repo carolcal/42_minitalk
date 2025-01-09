@@ -6,32 +6,17 @@
 /*   By: cayamash <cayamash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:24:50 by cayamash          #+#    #+#             */
-/*   Updated: 2025/01/09 11:42:00 by cayamash         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:01:48 by cayamash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-# ifndef FD_LEN
-#  define FD_LEN 42
-# endif
-
-# include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
-# include <stddef.h>
 # include <stdarg.h>
-
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
+# include <stddef.h>
+# include <stdlib.h>
 
 int		ft_isdigit(int c);
 void	ft_bzero(void *s, size_t n);
