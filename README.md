@@ -81,4 +81,4 @@ In the client side the `response_handler` function updates a global variable to 
 
 The following diagram illustrates the this minitalk works:
 
-![Minitalk Workflow](img/42_minitalk.png)
+![Minitalk Workflow](img/42_minitalk.jpg)
