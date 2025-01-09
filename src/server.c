@@ -6,7 +6,7 @@
 /*   By: cayamash <cayamash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:55:36 by cayamash          #+#    #+#             */
-/*   Updated: 2025/01/09 12:19:59 by cayamash         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:31:13 by cayamash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_message	g_message = {0, 0, 0};
 
-void	create_message(void)
+static void	create_message(void)
 {
 	char	*msg;
 
@@ -37,7 +37,7 @@ void	create_message(void)
 	}
 }
 
-void	signal_handler(int signal, siginfo_t *info, void *context)
+static void	signal_handler(int signal, siginfo_t *info, void *context)
 {
 	(void)context;
 	g_message.c = g_message.c << 1;

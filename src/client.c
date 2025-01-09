@@ -6,7 +6,7 @@
 /*   By: cayamash <cayamash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 17:26:10 by cayamash          #+#    #+#             */
-/*   Updated: 2025/01/09 12:19:43 by cayamash         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:31:26 by cayamash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static int	g_response = 0;
 
-void	response_handler(int signal)
+static void	response_handler(int signal)
 {
 	if (signal == SIGUSR1)
 		g_response = 1;
 }
 
-void	send_message(int pid, char *message)
+static void	send_message(int pid, char *message)
 {
 	int	i;
 	int	j;
