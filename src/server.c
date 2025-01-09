@@ -6,7 +6,7 @@
 /*   By: cayamash <cayamash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 15:55:36 by cayamash          #+#    #+#             */
-/*   Updated: 2025/01/09 11:06:09 by cayamash         ###   ########.fr       */
+/*   Updated: 2025/01/09 12:19:59 by cayamash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 	{
 		if (g_message.c == '\0')
 		{
-			ft_printf("%s\n", g_message.msg);
+			if (g_message.msg)
+				ft_printf("%s\n", g_message.msg);
+			else
+				ft_printf("\n");
 			free(g_message.msg);
 			g_message.msg = NULL;
 		}
@@ -67,15 +70,12 @@ int	main(void)
 
 	ft_printf("Welcome to Caroline Server *-*\n");
 	ft_printf("PID Server: %d\n", getpid());
-
 	signal_received.sa_sigaction = signal_handler;
 	signal_received.sa_flags = SA_SIGINFO;
-
+	sigemptyset(&signal_received.sa_mask);
 	sigaction(SIGUSR1, &signal_received, NULL);
 	sigaction(SIGUSR2, &signal_received, NULL);
-
 	while (1)
 		pause();
-
 	return (0);
 }

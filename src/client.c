@@ -6,7 +6,7 @@
 /*   By: cayamash <cayamash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 17:26:10 by cayamash          #+#    #+#             */
-/*   Updated: 2025/01/09 11:06:13 by cayamash         ###   ########.fr       */
+/*   Updated: 2025/01/09 12:19:43 by cayamash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	pid = ft_atoi(argv[1]);
-
 	signal(SIGUSR1, &response_handler);
-
 	send_message(pid, argv[2]);
-
 	return (0);
 }
