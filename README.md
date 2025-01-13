@@ -5,7 +5,7 @@ Minitalk is a project at 42 School that introduces and prepares you for bigger U
 In this project, you are required to create two files: a server and a client.
 
 - **Server**: When executed, the server will listen for incoming signals. Upon receiving a signal, it will decode the message and, once the entire message has been received, print it to the terminal.
-- **Client**: The client will send an encrypted message to the server using signals. The message will be passed as arguments, and the client will send each character the signals SIGUSR1 and SIGUSR2.
+- **Client**: The client will send an encrypted message to the server using signals. The message will be passed as an argument to the client.
 
 The process of sending the message is done by converting each character to its binary form. For each bit:
 
@@ -17,15 +17,10 @@ This means that the communication between the server and the client occurs throu
 ## But what are UNIX signals?
 UNIX signals are a form of inter-process communication (IPC) used to notify processes that an event has occurred. Signals can be sent by a process to another process (or to itself) to communicate information, often triggering specific actions.
 
-In this project, we use signals to send data between the client and server:
-
-- SIGUSR1: This signal is used to represent the binary value 1.
-- SIGUSR2: This signal represents the binary value 0.
-
 Signals are asynchronous, which means they can interrupt the normal flow of a program. For example, the server process will be paused until a signal is received, at which point it processes the signal and continues. This project uses signals for both communication and synchronization between the client and server.
 
 ### Why Use Signals?
-The use of signals allows for efficient and lightweight communication between the server and the client. Instead of relying on more complex methods like sockets or files, signals provide a simple mechanism to convey information. This is particularly suitable for small projects and exercises to understand low-level process management in UNIX systems.
+It allows a more efficient and lightweight communication between the server and the client. Instead of relying on more complex methods like sockets or files, signals provide a simple mechanism to convey information. This is particularly suitable for small projects and exercises to understand low-level process management in UNIX systems.
 
 ## `signal` library
 To manage UNIX signals, the project utilizes the signal library. Here’s a breakdown of the key components used:
@@ -34,13 +29,13 @@ To manage UNIX signals, the project utilizes the signal library. Here’s a brea
 
 -`sigemptyset()`: This function is used to initialize a signal set to be empty (i.e., no signals are blocked). It’s useful when configuring a signal handler with no restrictions on other signals while the handler is running.
 
-- `signal()` and `sigaction()`: These are used to set up the signal handlers. In this project, `sigaction` is used with the `SA_SIGINFO` flag, which provides more detailed information about the signal, such as the PID of the sender.
+- `signal()` and `sigaction()`: Are functions used to set up signal handlers in a program. These signal handlers define how a program should behave when it receives a specific signal.
 
 ## Other new functions
 
-- `getpid` : Retrieves the process ID (PID) of the current process. The client uses this to identify the PID of the server it needs to communicate with.
+- `getpid` : Retrieves the process ID (PID) of the current process. We will use to print server PID.
 - `usleep` : Suspends the program execution for a specified number of microseconds. This is useful for introducing a delay to avoid overwhelming the server with rapid signal sending.
-- `sleep` : Suspends the program execution for a specified number of seconds. Similar to usleep, it provides a coarser level of delay control.
+- `sleep` : Suspends the program execution for a specified number of seconds.
 - `kill` : Sends a signal to a process or group of processes. This is the core function used by the client to transmit signals (SIGUSR1 or SIGUSR2) to the server.
 - `exit` : Terminates the program. It is used to exit gracefully when an error occurs or when the task is complete.
 - `pause` : Causes the process to stop and wait until a signal is received. The server uses this function to wait for incoming signals from the client.
