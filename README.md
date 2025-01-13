@@ -44,7 +44,7 @@ To manage UNIX signals, the project utilizes the signal library. Here’s a brea
 ## Utilities Functions
 Besides some of my Libft functions (which I added in the `lib` folder), I also created several utility functions specifically for this project.
 
-### Send Message
+#### Send Message
 In the client side the `send_message` function sends a message from the client to the server by encoding it bit by bit:
 
 - Loops through each character of the message.
@@ -52,7 +52,7 @@ In the client side the `send_message` function sends a message from the client t
 - Sends **SIGUSR1** for a 1 bit and **SIGUSR2** for a 0 bit using the `kill` function.
 - After sending each bit, waits for the server's acknowledgment (`g_response`), introducing a slight delay with `usleep` if needed to avoid overwhelming the server.
 
-### Signal Handler
+#### Signal Handler
 In the server side the `signal_handler` function processes signals from the client to reconstruct the message:
 
 - **Bit Decoding:** Each signal represents a bit (`SIGUSR1 = 1`, `SIGUSR2 = 0`), which is added to the current character (`g_message.c`).
@@ -61,14 +61,14 @@ In the server side the `signal_handler` function processes signals from the clie
     - Otherwise, the character is added to the message.
 - **Acknowledgment:** Sends **SIGUSR1** back to the client after each signal is processed.
 
-### Message Creation
+#### Message Creation
 The `create_message` function dynamically builds the message:
 
 - Appends the current character (`g_message.c`) to the growing message (`g_message.msg`).
 - Initializes the message if it's the first character.
 - Ensures proper memory management and exits on allocation failure.
 
-### Response Handler
+#### Response Handler
 In the client side the `response_handler` function updates a global variable to confirm that the server received and processed a signal:
 
 
