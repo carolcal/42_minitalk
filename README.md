@@ -20,7 +20,7 @@ UNIX signals are a form of inter-process communication (IPC) used to notify proc
 Signals are asynchronous, which means they can interrupt the normal flow of a program. For example, the server process will be paused until a signal is received, at which point it processes the signal and continues. This project uses signals for both communication and synchronization between the client and server.
 
 ### Why Use Signals?
-It allows a more efficient and lightweight communication between the server and the client. Instead of relying on more complex methods like sockets or files, signals provide a simple mechanism to convey information. This is particularly suitable for small projects and exercises to understand low-level process management in UNIX systems.
+It allows more efficient and lightweight communication between the server and the client. Instead of relying on more complex methods like sockets or files, signals provide a simple mechanism to convey information. This is particularly suitable for small projects and exercises to understand low-level process management in UNIX systems.
 
 ## `signal` library
 To manage UNIX signals, the project utilizes the signal library. Here’s a breakdown of the key components used:
@@ -29,31 +29,31 @@ To manage UNIX signals, the project utilizes the signal library. Here’s a brea
 
 -`sigemptyset()`: This function is used to initialize a signal set to be empty (i.e., no signals are blocked). It’s useful when configuring a signal handler with no restrictions on other signals while the handler is running.
 
-- `signal()` and `sigaction()`: Are functions used to set up signal handlers in a program. These signal handlers define how a program should behave when it receives a specific signal.
+- `signal()` and `sigaction()`: These are functions used to set up signal handlers in a program. These signal handlers define how a program should behave when it receives a specific signal.
 
 ## Other new functions
 
-- `getpid` : Retrieves the process ID (PID) of the current process. We will use to print server PID.
-- `usleep` : Suspends the program execution for a specified number of microseconds. This is useful for introducing a delay to avoid overwhelming the server with rapid signal sending.
-- `sleep` : Suspends the program execution for a specified number of seconds.
-- `kill` : Sends a signal to a process or group of processes. This is the core function used by the client to transmit signals (SIGUSR1 or SIGUSR2) to the server.
-- `exit` : Terminates the program. It is used to exit gracefully when an error occurs or when the task is complete.
-- `pause` : Causes the process to stop and wait until a signal is received. The server uses this function to wait for incoming signals from the client.
+- `getpid`: Retrieves the process ID (PID) of the current process. We will use to print server PID.
+- `usleep`: Suspends the program execution for a specified number of microseconds. This is useful for introducing a delay to avoid overwhelming the server with rapid signal sending.
+- `sleep`: Suspends the program execution for a specified number of seconds.
+- `kill`: Sends a signal to a process or group of processes. This is the core function used by the client to transmit signals (SIGUSR1 or SIGUSR2) to the server.
+- `exit`: Terminates the program. It is used to exit gracefully when an error occurs or when the task is complete.
+- `pause`: Causes the process to stop and wait until a signal is received. The server uses this function to wait for incoming signals from the client.
 
 
 ## Utilities Functions
 Besides some of my Libft functions (which I added in the `lib` folder), I also created several utility functions specifically for this project.
 
-#### Send Message
-In the client side the `send_message` function sends a message from the client to the server by encoding it bit by bit:
+#### 1) `send_message()`
+On the client side, sends a message from the client to the server by encoding it bit by bit:
 
 - Loops through each character of the message.
-- For each character, iterates over its 8 bits (starting from the most significant bit).
+- For each character, iterate over its 8 bits (starting from the most significant bit).
 - Sends **SIGUSR1** for a 1 bit and **SIGUSR2** for a 0 bit using the `kill` function.
-- After sending each bit, waits for the server's acknowledgment (`g_response`), introducing a slight delay with `usleep` if needed to avoid overwhelming the server.
+- After sending each bit, wait for the server's acknowledgment to proceed.
 
-#### Signal Handler
-In the server side the `signal_handler` function processes signals from the client to reconstruct the message:
+#### 2) `signal_handler()`
+On the server side, processes signals from the client to reconstruct the message:
 
 - **Bit Decoding:** Each signal represents a bit (`SIGUSR1 = 1`, `SIGUSR2 = 0`), which is added to the current character (`g_message.c`).
 - **Character Assembly:** After 8 bits, a full character is formed:
@@ -61,19 +61,19 @@ In the server side the `signal_handler` function processes signals from the clie
     - Otherwise, the character is added to the message.
 - **Acknowledgment:** Sends **SIGUSR1** back to the client after each signal is processed.
 
-#### Message Creation
-The `create_message` function dynamically builds the message:
+#### 3) `create_message()`
+Dynamically builds the message:
 
 - Appends the current character (`g_message.c`) to the growing message (`g_message.msg`).
-- Initializes the message if it's the first character.
+- Initialize the message if it's the first character.
 - Ensures proper memory management and exits on allocation failure.
 
-#### Response Handler
-In the client side the `response_handler` function updates a global variable to confirm that the server received and processed a signal:
+#### 4) `response_handler()`
+On the client side, update the global variable `g_response` to confirm that the server received and processed the bit sent.
 
 
 ## Workflow Diagram
 
-The following diagram illustrates the this minitalk works:
+The following diagram illustrates how this minitalk works:
 
 ![Minitalk Workflow](img/42_minitalk.jpg)
